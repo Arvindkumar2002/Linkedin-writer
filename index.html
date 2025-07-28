@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn Content Generator | Enterprise-Grade AI Personalization</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Enterprise Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <button id="theme-toggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                
+                <div class="logo-section">
+                    <div class="logo-icon">
+                        <i class="fab fa-linkedin"></i>
+                    </div>
+                    <h1>LinkedIn Content Generator</h1>
+                </div>
+                
+                <p class="header-subtitle">
+                    Enterprise-grade AI-powered content creation for founders, entrepreneurs, and executives. 
+                    Generate personalized LinkedIn posts that match your voice and drive engagement.
+                </p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Enterprise Form Section -->
+            <section class="form-section">
+                <div class="form-container">
+                    <div class="form-header">
+                        <h2>Create Your Personalized Post</h2>
+                        <p>Enter your details below to generate AI-powered LinkedIn content tailored to your professional voice and industry trends.</p>
+                    </div>
+
+                    <form class="content-form" id="contentForm">
+                        <!-- API Key Field -->
+                        <div class="form-group">
+                            <div class="input-wrapper">
+                                <input type="password" id="apiKey" class="form-input" placeholder=" " required>
+                                <i class="fas fa-key input-icon"></i>
+                                <label for="apiKey" class="form-label">
+                                    OpenAI API Key
+                                    <span class="required">*</span>
+                                </label>
+                            </div>
+                            <div class="input-footer">
+                                <span class="helper-text">Your API key is processed locally and never stored</span>
+                                <span class="error-message" id="apiKeyError"></span>
+                            </div>
+                        </div>
+
+                        <!-- Topic and LinkedIn URL Row -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <div class="input-wrapper">
+                                    <input type="text" id="topic" class="form-input" placeholder=" " required>
+                                    <i class="fas fa-lightbulb input-icon"></i>
+                                    <label for="topic" class="form-label">
+                                        Topic Description
+                                        <span class="required">*</span>
+                                    </label>
+                                </div>
+                                <div class="input-footer">
+                                    <span class="helper-text">Describe what you want to post about</span>
+                                    <span class="char-count" id="charCount">0/500</span>
+                                    <span class="error-message" id="topicError"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="input-wrapper">
+                                    <input type="url" id="linkedinUrl" class="form-input" placeholder=" " required>
+                                    <i class="fab fa-linkedin input-icon"></i>
+                                    <label for="linkedinUrl" class="form-label">
+                                        LinkedIn Profile URL
+                                        <span class="required">*</span>
+                                    </label>
+                                </div>
+                                <div class="input-footer">
+                                    <span class="helper-text">Your public LinkedIn profile for style analysis</span>
+                                    <span class="error-message" id="urlError"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Industry Keyword Field -->
+                        <div class="form-group">
+                            <div class="input-wrapper">
+                                <input type="text" id="industryKeyword" class="form-input" placeholder=" " required>
+                                <i class="fas fa-industry input-icon"></i>
+                                <label for="industryKeyword" class="form-label">
+                                    Industry Keyword
+                                    <span class="required">*</span>
+                                </label>
+                            </div>
+                            <div class="input-footer">
+                                <span class="helper-text">Your industry or niche for targeted content</span>
+                                <span class="error-message" id="industryError"></span>
+                            </div>
+                        </div>
+
+                        <!-- Generate Image Checkbox -->
+                        <div class="form-group">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" id="generateImage" class="form-checkbox">
+                                <label for="generateImage" class="checkbox-label">
+                                    <i class="fas fa-image"></i>
+                                    Generate LinkedIn-Optimized Image
+                                </label>
+                            </div>
+                            <div class="input-footer">
+                                <span class="helper-text">Create a professional image to accompany your post</span>
+                            </div>
+                        </div>
+
+                        <!-- Generate Button -->
+                        <button type="submit" class="btn btn-primary btn-large" id="generateBtn">
+                            <div class="btn-content">
+                                <i class="fas fa-pen"></i>
+                                Generate Personalized Content
+                            </div>
+                            <div class="btn-loading">
+                                <div class="loading-circle"></div>
+                                <span>Generating...</span>
+                            </div>
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Loading Section -->
+            <section class="loading-section hidden" id="loadingSection">
+                <div class="loading-animation">
+                    <div class="loading-circle"></div>
+                    <span>Analyzing your profile and generating content...</span>
+                </div>
+                <div class="loading-steps">
+                    <div class="step"></div>
+                    <div class="step"></div>
+                    <div class="step"></div>
+                    <div class="step"></div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section hidden" id="resultsSection">
+                <div class="results-header">
+                    <h2>Analysis & Generated Content</h2>
+                    <div class="results-actions">
+                        <button class="btn btn-secondary" id="regenerateBtn">
+                            <i class="fas fa-redo"></i>
+                            Regenerate
+                        </button>
+                        <button class="btn btn-secondary" id="editBtn">
+                            <i class="fas fa-edit"></i>
+                            Edit
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Input Summary -->
+                <div class="input-summary">
+                    <div>
+                        <strong>API Key</strong>
+                        <span id="summaryApiKey">••••••••••••••••</span>
+                    </div>
+                    <div>
+                        <strong>Topic</strong>
+                        <span id="summaryTopic"></span>
+                    </div>
+                    <div>
+                        <strong>LinkedIn URL</strong>
+                        <span id="summaryUrl"></span>
+                    </div>
+                    <div>
+                        <strong>Industry</strong>
+                        <span id="summaryIndustry"></span>
+                    </div>
+                </div>
+
+                <!-- Generated Content -->
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="card-header">
+                            <i class="fas fa-chart-line"></i>
+                            <h3>AI Analysis & Generated Content</h3>
+                        </div>
+                        <div class="card-content" id="generatedContent">
+                            <!-- Content will be populated here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Copy Section -->
+                <div class="copy-section">
+                    <div class="copy-header">
+                        <h3>LinkedIn Post Preview</h3>
+                        <button class="btn btn-primary" id="copyContentBtn">
+                            <i class="fas fa-copy"></i>
+                            Copy LinkedIn Post
+                        </button>
+                    </div>
+                    <div class="copy-container">
+                        <div class="post-preview" id="postContent">
+                            <!-- Post content will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Error Section -->
+            <section class="error-section hidden" id="errorSection">
+                <i class="fas fa-exclamation-triangle error-icon"></i>
+                <div>
+                    <h3>Error</h3>
+                    <p id="errorMessage"></p>
+                    <button class="btn btn-primary" id="retryBtn">
+                        <i class="fas fa-redo"></i>
+                        Try Again
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>&copy; 2024 LinkedIn Content Generator. Enterprise-grade AI personalization for professionals.</p>
+        </footer>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal hidden" id="editModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit LinkedIn Post</h3>
+                <button class="modal-close" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <textarea class="edit-textarea" id="editPostContent" placeholder="Edit your LinkedIn post here..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelEdit">Cancel</button>
+                <button class="btn btn-primary" id="saveEdit">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tooltip -->
+    <div class="tooltip hidden" id="tooltip"></div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
